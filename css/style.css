@@ -1,0 +1,89 @@
+/* css/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #1a202c;
+    color: #e2e8f0;
+}
+.board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    position: relative;
+}
+.board-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 100%; /* Truque para tornar as células quadradas */
+    position: relative;
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.board-cell-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+.player-token {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #fca311;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    color: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.12);
+    transition: all 0.5s ease-in-out;
+}
+.shake-animation {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+.game-panel {
+    min-height: 150px;
+}
+.button-glow {
+    box-shadow: 0 0 5px #63b3ed, 0 0 10px #63b3ed, 0 0 15px #63b3ed;
+}
+.text-alignment-good { color: #68d391; }
+.text-alignment-medium { color: #f6e05e; }
+.text-alignment-bad { color: #fc8181; }
+.text-risk-good { color: #68d391; }
+.text-risk-medium { color: #f6e05e; }
+.text-risk-bad { color: #fc8181; }
+.text-resources-good { color: #63b3ed; }
+.text-resources-medium { color: #f6e05e; }
+.text-resources-bad { color: #fc8181; }
+
+@media (max-width: 640px) {
+    .board {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
