@@ -8,6 +8,7 @@
         const boardSize = 25; // Número de casas no tabuleiro
         let playerToken; // Referência ao token do jogador no DOM
         let currentMaturityLevel = null;
+        let activeBoardSpaces = [];
 
         // Referências aos elementos do DOM
         const gameBoard = document.querySelector('#gameBoard .board');
@@ -211,6 +212,8 @@
             gameOverModal.classList.add('hidden');
             gameOverModal.classList.remove('flex');
             
+            activeBoardSpaces = shuffleBoardSpaces();
+
             updateUI();
             generateBoard();
             diceButton.addEventListener('click', rollDice);
@@ -231,11 +234,11 @@
 
         // Função para gerar o tabuleiro dinamicamente
         function generateBoard() {
-            const shuffledSpaces = shuffleBoardSpaces();
+            //const shuffledSpaces = shuffleBoardSpaces();
             gameBoard.innerHTML = '';
-            for (let i = 0; i < shuffledSpaces.length; i++) {
+            for (let i = 0; i < activeBoardSpaces.length; i++) {
                 const cell = document.createElement('div');
-                const space = shuffledSpaces[i];
+                const space = activeBoardSpaces[i];
                 cell.classList.add('board-cell', 'shadow-sm', 'relative');
                 cell.style.backgroundColor = space.color;
                 cell.innerHTML = `<div class="board-cell-content"><span class="font-bold">${i + 1}</span><span class="text-2xl">${space.icon}</span></div>`;
@@ -346,7 +349,7 @@
                     updateUI();
                     turn++;
                     updateMaturityLevel();
-                    checkSpaceType(boardSpaces[position].type);
+                    checkSpaceType(activeBoardSpaces[position].type);
                 }
             });
         }
