@@ -32,6 +32,11 @@
         const closeStatusModal = document.getElementById('closeStatusModal');
         const statusModalMessage = document.getElementById('statusModalMessage');
 
+        const blackSwanModal = document.getElementById('blackSwanModal');
+        const blackSwanMessage = document.getElementById('blackSwanMessage');
+        const blackSwanActions = document.getElementById('blackSwanActions');
+
+
         // Definição dos tipos de casa no tabuleiro
         const boardSpaces = [
             { type: 'start', icon: '🚀', color: '#10b981' }, // Início
@@ -235,6 +240,35 @@
             { text: "A licença de um software crítico expirou, causando uma parada inesperada. -$25 de orçamento para a renovação de emergência!", resourcesChange: -25 }
         ];
 
+        // ===== NOVOS EVENTOS DE CRISE =====
+        const blackSwanEvents = [
+            {
+                text: "ATAQUE RANSOMWARE! Dados críticos da universidade foram criptografados. Os hackers exigem um resgate altíssimo e o tempo está se esgotando. O que você faz?",
+                actions: [
+                    { text: "Pagar o resgate para recuperar os dados rapidamente.", resourcesChange: -70, alignmentChange: -20, riskChange: 10 },
+                    { text: "Não pagar. Tentar restaurar a partir dos backups, arriscando perda permanente de dados.", resourcesChange: -25, alignmentChange: -25, riskChange: 30 },
+                    { text: "Isolar os sistemas, notificar as autoridades e iniciar uma recuperação forense.", resourcesChange: -40, alignmentChange: 10, riskChange: -10 }
+                ]
+            },
+            {
+                text: "FALHA CRÍTICA DE FORNECEDOR! O principal fornecedor do seu sistema acadêmico faliu. O sistema pode parar a qualquer momento e não há mais suporte.",
+                actions: [
+                    { text: "Iniciar um projeto de migração de emergência para um novo fornecedor.", resourcesChange: -60, alignmentChange: 5, riskChange: 5 },
+                    { text: "Tentar manter o sistema atual funcionando com a equipe interna, sem suporte.", resourcesChange: -10, alignmentChange: -30, riskChange: 40 },
+                    { text: "Contratar consultores caríssimos para tentar dar suporte ao sistema antigo.", resourcesChange: -50, alignmentChange: -15, riskChange: 20 }
+                ]
+            },
+            {
+                text: "NOVA LEI DE PRIVACIDADE! Uma nova lei de proteção de dados muito mais rígida foi aprovada e entra em vigor imediatamente. Sua instituição não está em conformidade.",
+                actions: [
+                    { text: "Alocar um grande orçamento para uma força-tarefa de conformidade imediata.", resourcesChange: -50, alignmentChange: 15, riskChange: -20 },
+                    { text: "Ignorar a lei por enquanto e torcer para não ser fiscalizado.", resourcesChange: 0, alignmentChange: -20, riskChange: 50 },
+                    { text: "Fazer apenas as mudanças mais baratas e visíveis, assumindo o risco de multas.", resourcesChange: -20, alignmentChange: -10, riskChange: 25 }
+                ]
+            }
+        ];
+
+
         // Função para iniciar ou reiniciar o jogo
         function initializeGame() {
             position = 0;
@@ -399,6 +433,49 @@
 
         }
 
+        /**
+        * Inicia um evento de Cisne Negro, pausando o jogo e mostrando o modal de crise.
+        */
+        function triggerBlackSwanEvent() {
+            diceButton.disabled = true; // Pausa o jogo
+            const event = blackSwanEvents[Math.floor(Math.random() * blackSwanEvents.length)];
+
+            blackSwanMessage.textContent = event.text;
+            blackSwanActions.innerHTML = ''; // Limpa ações anteriores
+
+            event.actions.forEach(action => {
+                const button = document.createElement('button');
+                button.textContent = action.text;
+                button.className = "bg-red-700 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105";
+                button.onclick = () => handleBlackSwanAction(action);
+                blackSwanActions.appendChild(button);
+            });
+
+            blackSwanModal.classList.remove('hidden');
+            blackSwanModal.classList.add('flex');
+        }
+
+        /**
+         * Processa a escolha do jogador durante um evento de crise.
+         * @param {object} action O objeto de ação escolhido.
+         */
+        function handleBlackSwanAction(action) {
+            resources += (action.resourcesChange || 0);
+            businessAlignment += (action.alignmentChange || 0);
+            riskLevel += (action.riskChange || 0);
+
+            blackSwanModal.classList.add('hidden');
+            blackSwanModal.classList.remove('flex');
+            
+            updateUI();
+            checkGameOver();
+
+            // Se o jogo não acabou, permite que o jogador continue
+            if (!gameOverModal.classList.contains('flex')) {
+                setTimeout(() => resetTurn(), 1000); // Dá um tempo antes de reativar o botão
+            }
+        }
+
         // Função para rolar o dado
         function rollDice() {
             const roll = Math.floor(Math.random() * 6) + 1;
@@ -431,6 +508,15 @@
                     turn++;
                     updateMaturityLevel();
                     checkSpaceType(activeBoardSpaces[position].type);
+
+                    // ===== LÓGICA DO GATILHO DO CISNE NEGRO =====
+                    // Chance de 30% a cada 5 turnos (exceto nos primeiros turnos)
+                    if (turn > 3 && turn % 5 === 0 && Math.random() < 0.30) {
+                        triggerBlackSwanEvent();
+                    } else {
+                        checkSpaceType(activeBoard[position].type);
+                    }
+
                 }
             });
         }
