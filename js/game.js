@@ -27,6 +27,11 @@
         const maturityModal = document.getElementById('maturityModal');
         const maturityDescriptionsContainer = document.getElementById('maturityDescriptions'); // Corrigido id
 
+        const statusButton = document.getElementById('statusButton');
+        const statusModal = document.getElementById('statusModal');
+        const closeStatusModal = document.getElementById('closeStatusModal');
+        const statusModalMessage = document.getElementById('statusModalMessage');
+
         // Definição dos tipos de casa no tabuleiro
         const boardSpaces = [
             { type: 'start', icon: '🚀', color: '#10b981' }, // Início
@@ -247,8 +252,16 @@
             generateBoard();
             diceButton.addEventListener('click', rollDice);
             restartButton.addEventListener('click', initializeGame);
+
+            statusButton.addEventListener('click', showStatusModal);
+            closeStatusModal.addEventListener('click', () => {
+                statusModal.classList.add('hidden');
+                statusModal.classList.remove('flex');
+            });
+
         }
 
+        // Função para embaralhar as casas do tabuleiro, mantendo o início e o fim fixos
         function shuffleBoardSpaces() {
             // Mantém start e finish fixos
             const fixedSpaces = [boardSpaces[0], boardSpaces[boardSpaces.length - 1]];
@@ -324,6 +337,45 @@
             maturityModal.classList.add('hidden');
             maturityModal.classList.remove('flex');
         });
+        }
+
+        function showStatusModal() {
+
+            const resourcesValue = resourcesDisplay.textContent;
+            const resourcesClass = resourcesDisplay.className;
+
+            const alignmentValue = businessAlignmentDisplay.textContent;
+            const alignmentClass = businessAlignmentDisplay.className;
+
+            const riskValue = riskLevelDisplay.textContent;
+            const riskClass = riskLevelDisplay.className;
+
+            statusModalMessage.innerHTML = `
+                <p class="flex justify-between items-center">
+                    <strong class="text-xl">Recursos (Budget):</strong>
+                    <span class="${resourcesClass} text-2xl">$${resourcesValue}</span>
+                </p>
+                <p class="text-sm text-gray-400 -mt-2">Seus recursos financeiros. Se chegarem a zero, o jogo acaba.</p>
+                
+                <hr class="border-gray-600 my-4">
+
+                <p class="flex justify-between items-center">
+                    <strong class="text-xl">Alinhamento Estratégico:</strong>
+                    <span class="${alignmentClass} text-2xl">${alignmentValue}</span>
+                </p>
+                <p class="text-sm text-gray-400 -mt-2">Mede o quão bem a TI está alinhada aos objetivos do negócio. Não deixe chegar a zero!</p>
+                
+                <hr class="border-gray-600 my-4">
+
+                <p class="flex justify-between items-center">
+                    <strong class="text-xl">Nível de Risco:</strong>
+                    <span class="${riskClass} text-2xl">${riskValue}</span>
+                </p>
+                <p class="text-sm text-gray-400 -mt-2">Representa as vulnerabilidades e ameaças. Um nível muito alto (acima de 150) é perigoso.</p>
+            `;
+
+            statusModal.classList.remove('hidden');
+            statusModal.classList.add('flex');
         }
 
         // Função para atualizar a interface do usuário (UI)
