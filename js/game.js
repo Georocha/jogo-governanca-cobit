@@ -181,6 +181,27 @@
                     { text: "Implementar controles e processos em toda a cadeia de valor (do contrato à operação).", alignmentChange: 15, riskChange: -10, cost: 15 },
                     { text: "Focar apenas na instalação e configuração do software.", alignmentChange: -10, riskChange: 10, cost: 0 }
                 ]
+            },
+            {
+                text: "O portal do aluno apresenta lentidão constante, gerando reclamações. Qual a sua abordagem?",
+                actions: [
+                    { text: "Investigar a causa raiz para uma solução definitiva (Gerenciamento de Problemas).", alignmentChange: 15, riskChange: -10, cost: 10 },
+                    { text: "Apenas reiniciar o servidor quando o problema ocorre, como uma solução temporária.", alignmentChange: -10, riskChange: 5, cost: 0 }
+                ]
+            },
+            {
+                text: "O conselho quer que a TI gere mais valor para os alunos. Como você inicia esse processo?",
+                actions: [
+                    { text: "Mapear as necessidades dos alunos e definir metas de TI claras para atendê-las.", alignmentChange: 20, riskChange: -5, cost: 5 },
+                    { text: "Comprar os tablets mais modernos para os laboratórios, assumindo que isso gera valor.", alignmentChange: -5, riskChange: 10, cost: 40 }
+                ]
+            },
+            {
+                text: "O sistema de matrículas online caiu durante o período de pico. Como a liderança deve agir para garantir o bom Desempenho (ISO 38500)?",
+                actions: [
+                    { text: "Exigir um plano de melhoria, monitorando o desempenho do serviço de TI.", alignmentChange: 15, riskChange: -15, cost: 10 },
+                    { text: "Apenas culpar a equipe de TI pela falha, sem uma análise mais profunda.", alignmentChange: -15, riskChange: 10, cost: 0 }
+                ]
             }
         ];
         
@@ -190,7 +211,11 @@
             { text: "Uma nova ferramenta de automação foi implementada com sucesso. +10 de Alinhamento.", alignmentChange: 10 },
             { text: "A equipe de TI concluiu um projeto complexo antes do prazo. +15 de Alinhamento.", alignmentChange: 15 },
             { text: "Um novo processo de governança melhorou a tomada de decisões. +10 de Alinhamento.", alignmentChange: 10 },
-            { text: "A conformidade com regulamentações foi elogiada na auditoria. -10 de Risco.", riskChange: -10 }
+            { text: "A conformidade com regulamentações foi elogiada na auditoria. -10 de Risco.", riskChange: -10 },
+            { text: "A equipe adotou um framework ágil, melhorando a entrega de valor. +15 de Alinhamento.", alignmentChange: 15 },
+            { text: "Um investimento em treinamento de segurança reduziu drasticamente as tentativas de phishing. -15 de Risco.", riskChange: -15 },
+            { text: "Uma renegociação de contrato com um fornecedor liberou fundos inesperados. +$25 de orçamento!", resourcesChange: 25 },
+            { text: "A criação de um catálogo de serviços de TI claro foi muito bem recebida pela empresa. +10 de Alinhamento.", alignmentChange: 10 }
         ];
 
         const challenges = [
@@ -198,7 +223,11 @@
             { text: "Uma falha de segurança causou uma pequena perda de dados. +15 de Risco.", riskChange: 15 },
             { text: "Um projeto-chave de TI está atrasado, afetando as metas de negócio. -10 de Alinhamento.", alignmentChange: -10 },
             { text: "Um novo requisito de segurança gerou um custo inesperado. -$15 de orçamento!", resourcesChange: -15 },
-            { text: "A falta de comunicação entre TI e o negócio resultou em um projeto inútil. -15 de Alinhamento.", alignmentChange: -15 }
+            { text: "A falta de comunicação entre TI e o negócio resultou em um projeto inútil. -15 de Alinhamento.", alignmentChange: -15 },
+            { text: "Um ataque de ransomware explorou uma vulnerabilidade não corrigida. +25 de Risco!", riskChange: 25 },
+            { text: "'Shadow IT': O departamento de marketing comprou um software sem a aprovação da TI, criando riscos. +10 de Risco.", riskChange: 10 },
+            { text: "Um funcionário chave da equipe de TI pediu demissão, impactando projetos. -10 de Alinhamento.", alignmentChange: -10 },
+            { text: "A licença de um software crítico expirou, causando uma parada inesperada. -$25 de orçamento para a renovação de emergência!", resourcesChange: -25 }
         ];
 
         // Função para iniciar ou reiniciar o jogo
@@ -386,7 +415,7 @@
                     businessAlignment += (opp.alignmentChange || 0);
                     riskLevel += (opp.riskChange || 0);
                     actionButtonsContainer.innerHTML = '';
-                    setTimeout(() => resetTurn(), 5000);
+                    setTimeout(() => resetTurn(), 4000);
                     break;
                 case 'challenge':
                     const chlg = challenges[Math.floor(Math.random() * challenges.length)];
@@ -395,7 +424,7 @@
                     businessAlignment += (chlg.alignmentChange || 0);
                     riskLevel += (chlg.riskChange || 0);
                     actionButtonsContainer.innerHTML = '';
-                    setTimeout(() => resetTurn(), 5000);
+                    setTimeout(() => resetTurn(), 4000);
                     break;
                 case 'finish':
                     endGame(true);
@@ -438,7 +467,7 @@
             
             checkGameOver();
             if (diceButton.disabled) {
-                setTimeout(() => resetTurn(), 2000);
+                setTimeout(() => resetTurn(), 1500);
             }
         }
 
