@@ -546,29 +546,29 @@
             let maturityLevel = "Inexistente (0)";
             let maturityDescription = "A governança de TI não existe ou não é reconhecida.";
 
-                    // Cálculo de uma pontuação agregada para determinar o nível
+            // Cálculo de uma pontuação agregada para determinar o nível
             // O risco é subtraído porque um risco menor é melhor.
             const finalScore = (businessAlignment * 1.5) + (100 - riskLevel) + resources; 
 
             if (finalScore >= 350) {
                 maturityLevel = "Otimizado (5)";
-                maturityDescription = "A governança de TI é um processo contínuo e aperfeiçoado, com foco na inovação.";
+                maturityDescription = "Você fez uma excelente governança!A governança de TI é um processo contínuo e aperfeiçoado, com foco na inovação.";
             } else if (finalScore >= 300) {
                 maturityLevel = "Gerenciado (4)";
-                maturityDescription = "Os processos de governança são monitorados e medidos de forma proativa.";
+                maturityDescription = "Você fez uma ótima governança! Os processos de governança são monitorados e medidos de forma proativa.";
             } else if (finalScore >= 250) {
                 maturityLevel = "Definido (3)";
-                maturityDescription = "Os processos de governança são bem documentados e comunicados em toda a organização.";
+                maturityDescription = "Você está no caminho certo! Os processos de governança são bem documentados e comunicados em toda a organização.";
             } else if (finalScore >= 180) {
                 maturityLevel = "Repetível (2)";
-                maturityDescription = "As práticas de governança são consistentes, mas dependem do conhecimento individual.";
+                maturityDescription = "Você conseguiu progredir! As práticas de governança são consistentes, mas dependem do conhecimento individual.";
             } else if (finalScore >= 120) {
                 maturityLevel = "Inicial (1)";
-                maturityDescription = "Há uma abordagem informal para a governança, com pouca padronização.";
+                maturityDescription = "Você precisa evoluir! Há uma abordagem informal para a governança, com pouca padronização.";
             }
             if (isWinner) {
-                modalTitle.textContent = "Vitória! 🎉";
-                modalMessage.textContent = `Você chegou ao fim da jornada com um Alinhamento de ${businessAlignment}, Risco de ${riskLevel} e Recursos de $${resources}. Você demonstrou uma excelente governança de TI.\n\nNível de Maturidade: ${maturityLevel}\n${maturityDescription}`;
+                modalTitle.textContent = "Fim da jornada! 🎉";
+                modalMessage.textContent = `Você chegou ao fim da jornada com um Alinhamento de ${businessAlignment}, Risco de ${riskLevel} e Recursos de $${resources}.\n\nNível de Maturidade: ${maturityLevel}\n${maturityDescription}`;
             } else {
                 modalTitle.textContent = "Game Over... 😔";
                 let message = '';
