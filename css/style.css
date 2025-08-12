@@ -87,3 +87,35 @@ body {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+/* ANIMAÇÕES DOS INDICADORES */
+
+/* Animação para ganhos (verde) */
+@keyframes update-good-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); color: #4ade80; /* green-400 */ }
+  100% { transform: scale(1); }
+}
+.update-good {
+  animation: update-good-animation 0.7s ease-in-out;
+}
+
+/* Animação para perdas (vermelho) */
+@keyframes update-bad-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); color: #f87171; /* red-400 */ }
+  100% { transform: scale(1); }
+}
+.update-bad {
+  animation: update-bad-animation 0.7s ease-in-out;
+}
+
+/* Animação neutra para o contador de turno (um leve pulo) */
+@keyframes update-neutral-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.update-neutral {
+  animation: update-neutral-animation 0.5s ease-in-out;
+}

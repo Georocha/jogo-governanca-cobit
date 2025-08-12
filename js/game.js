@@ -379,24 +379,48 @@
         }
 
         // Função para atualizar a interface do usuário (UI)
+        // Função para atualizar a interface do usuário com os valores atuais do jogo
         function updateUI() {
+            // Pega os valores antigos da tela antes de atualizar
+            const oldResources = parseInt(resourcesDisplay.textContent.replace('$', ''));
+            const oldAlignment = parseInt(businessAlignmentDisplay.textContent);
+            const oldRisk = parseInt(riskLevelDisplay.textContent);
+
+            // Compara os valores e ativa a animação correspondente
+            if (resources > oldResources) triggerAnimation(resourcesDisplay, 'update-good');
+            if (resources < oldResources) triggerAnimation(resourcesDisplay, 'update-bad');
+
+            if (businessAlignment > oldAlignment) triggerAnimation(businessAlignmentDisplay, 'update-good');
+            if (businessAlignment < oldAlignment) triggerAnimation(businessAlignmentDisplay, 'update-bad');
+
+            // Para o risco, a lógica é invertida: aumentar é ruim, diminuir é bom
+            if (riskLevel > oldRisk) triggerAnimation(riskLevelDisplay, 'update-bad');
+            if (riskLevel < oldRisk) triggerAnimation(riskLevelDisplay, 'update-good');
+
+            // Anima o contador de turnos a cada atualização
+            triggerAnimation(turnCounter, 'update-neutral');
+
+            // Atualiza os valores na tela
+            resourcesDisplay.textContent = resources; // Removido o '$' daqui para facilitar a leitura do valor
             businessAlignmentDisplay.textContent = businessAlignment;
-            businessAlignmentDisplay.className = businessAlignment > 70 ? 'font-bold text-alignment-good' : (businessAlignment > 40 ? 'font-bold text-alignment-medium' : 'font-bold text-alignment-bad');
-            
             riskLevelDisplay.textContent = riskLevel;
-            riskLevelDisplay.className = riskLevel < 30 ? 'font-bold text-risk-good' : (riskLevel < 70 ? 'font-bold text-risk-medium' : 'font-bold text-risk-bad');
+            turnCounter.textContent = `Turno: ${turn}`;
 
-            resourcesDisplay.textContent = resources;
-            resourcesDisplay.className = resources > 50 ? 'font-bold text-resources-good' : (resources > 20 ? 'font-bold text-resources-medium' : 'font-bold text-resources-bad');
+            // Atualiza as cores com base nos novos valores
+            resourcesDisplay.className = 'font-bold'; // Reseta a classe
+            if (resources > 75) resourcesDisplay.classList.add('text-green-400');
+            else if (resources > 30) resourcesDisplay.classList.add('text-yellow-400');
+            else resourcesDisplay.classList.add('text-red-400');
 
-            turnCounter.textContent = turn;
+            businessAlignmentDisplay.className = 'font-bold';
+            if (businessAlignment > 75) businessAlignmentDisplay.classList.add('text-green-400');
+            else if (businessAlignment > 30) businessAlignmentDisplay.classList.add('text-yellow-400');
+            else businessAlignmentDisplay.classList.add('text-red-400');
 
-            // Move o token do jogador
-            const oldCell = gameBoard.children[position];
-            if (oldCell) {
-                oldCell.appendChild(playerToken);
-            }
-
+            riskLevelDisplay.className = 'font-bold';
+            if (riskLevel < 25) riskLevelDisplay.classList.add('text-green-400');
+            else if (riskLevel < 75) riskLevelDisplay.classList.add('text-yellow-400');
+            else riskLevelDisplay.classList.add('text-red-400');
         }
 
         // Função para rolar o dado
@@ -452,6 +476,19 @@
                     gameBoard.children[currentPos].appendChild(playerToken);
                 }
             }, 250); // Velocidade do movimento
+        }
+
+        /**
+         * Ativa uma animação em um elemento adicionando uma classe CSS temporariamente.
+         * @param {HTMLElement} element O elemento do DOM a ser animado.
+         * @param {string} animationClass A classe CSS que contém a animação.
+         */
+        function triggerAnimation(element, animationClass) {
+            element.classList.add(animationClass);
+            // Remove a classe após a animação para que possa ser usada novamente
+            setTimeout(() => {
+                element.classList.remove(animationClass);
+            }, 700); // Duração deve ser a mesma da animação em CSS
         }
 
         // Função para verificar o tipo de casa e executar a ação
