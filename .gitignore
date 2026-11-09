@@ -1,0 +1,18 @@
+# Dependências (quando instalar o Node.js no futuro)
+node_modules/
+
+# Build do Vite
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
